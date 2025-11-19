@@ -3,7 +3,6 @@ import { markdownToHtml } from "../../common/scripts/markdown.js";
 const textarea = document.querySelector("#slidesTextarea");
 const preview = document.querySelector("#preview");
 const insertDelimiterBtn = document.querySelector("[data-action='insert-delimiter']");
-const cheatsheetBtn = document.querySelector("[data-action='open-cheatsheet']");
 const addSlidesBtn = document.querySelector("[data-action='add-slides']");
 const clearAllBtn = document.querySelector("[data-action='clear-all']");
 const statusLogEl = document.querySelector("#statusLog");
@@ -382,9 +381,6 @@ function init() {
   insertDelimiterBtn?.addEventListener("click", insertDelimiter);
   addSlidesBtn?.addEventListener("click", addSlides);
   clearAllBtn?.addEventListener("click", clearAllSlides);
-  cheatsheetBtn?.addEventListener("click", () =>
-    window.open("https://www.markdownguide.org/cheat-sheet/", "_blank", "noopener")
-  );
   fontSelect?.addEventListener("change", () => updateSettings("font family"));
   fontSizeInput?.addEventListener("input", () => updateSettings("font size"));
   textAlignSelect?.addEventListener("change", () => updateSettings("horizontal alignment"));

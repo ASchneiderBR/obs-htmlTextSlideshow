@@ -30,7 +30,7 @@ const DEFAULT_STATE = {
     notes: "initial",
   },
   settings: {
-    defaultFontFamily: "Inter, 'Segoe UI', sans-serif",
+    defaultFontFamily: "'Montserrat', sans-serif",
     defaultFontSizePx: 42,
     lineHeight: 1.25,
     textAlign: "center",

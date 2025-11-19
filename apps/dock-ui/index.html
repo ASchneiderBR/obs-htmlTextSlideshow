@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OBS Text Slides Dock</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&family=Open+Sans:wght@400;600;700&family=Lato:wght@400;700&family=Poppins:wght@400;600;700&family=Raleway:wght@400;600;700&family=Ubuntu:wght@400;700&family=Nunito:wght@400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@400;700&family=PT+Sans:wght@400;700&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -16,24 +19,47 @@
             <label>
               Font family
               <select id="fontFamily">
-                <option value="Inter, 'Segoe UI', sans-serif">Inter / System stack</option>
-                <option value="Arial, Helvetica, sans-serif">Arial</option>
-                <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica</option>
-                <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
-                <option value="Verdana, Geneva, Tahoma, sans-serif">Verdana</option>
-                <option value="Tahoma, Verdana, Segoe, sans-serif">Tahoma</option>
-                <option value="'Trebuchet MS', 'Lucida Sans', Arial, sans-serif">Trebuchet MS</option>
-                <option value="Georgia, 'Times New Roman', Times, serif">Georgia</option>
-                <option value="'Times New Roman', Times, serif">Times New Roman</option>
-                <option value="'Source Serif 4', 'Times New Roman', serif">Source Serif</option>
-                <option value="Garamond, Baskerville, 'Times New Roman', serif">Garamond</option>
-                <option value="'Courier New', Courier, monospace">Courier New</option>
-                <option value="'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace">JetBrains Mono</option>
-                <option value="Consolas, 'Courier New', monospace">Consolas</option>
-                <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans MS</option>
-                <option value="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif">Impact</option>
-                <option value="'Lucida Console', Monaco, monospace">Lucida Console</option>
-                <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino</option>
+                <optgroup label="Google Fonts - Sans Serif">
+                  <option value="'Montserrat', sans-serif">Montserrat</option>
+                  <option value="'Roboto', sans-serif">Roboto</option>
+                  <option value="'Open Sans', sans-serif">Open Sans</option>
+                  <option value="'Lato', sans-serif">Lato</option>
+                  <option value="'Poppins', sans-serif">Poppins</option>
+                  <option value="'Raleway', sans-serif">Raleway</option>
+                  <option value="'Ubuntu', sans-serif">Ubuntu</option>
+                  <option value="'Nunito', sans-serif">Nunito</option>
+                  <option value="'PT Sans', sans-serif">PT Sans</option>
+                  <option value="'Oswald', sans-serif">Oswald</option>
+                </optgroup>
+                <optgroup label="Google Fonts - Serif">
+                  <option value="'Playfair Display', serif">Playfair Display</option>
+                  <option value="'Merriweather', serif">Merriweather</option>
+                </optgroup>
+                <optgroup label="System Fonts - Sans Serif">
+                  <option value="Inter, 'Segoe UI', sans-serif">Inter / System</option>
+                  <option value="Arial, Helvetica, sans-serif">Arial</option>
+                  <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica</option>
+                  <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
+                  <option value="Verdana, Geneva, Tahoma, sans-serif">Verdana</option>
+                  <option value="Tahoma, Verdana, Segoe, sans-serif">Tahoma</option>
+                  <option value="'Trebuchet MS', 'Lucida Sans', Arial, sans-serif">Trebuchet MS</option>
+                  <option value="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif">Impact</option>
+                </optgroup>
+                <optgroup label="System Fonts - Serif">
+                  <option value="Georgia, 'Times New Roman', Times, serif">Georgia</option>
+                  <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                  <option value="Garamond, Baskerville, 'Times New Roman', serif">Garamond</option>
+                  <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino</option>
+                </optgroup>
+                <optgroup label="Monospace">
+                  <option value="'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace">JetBrains Mono</option>
+                  <option value="'Courier New', Courier, monospace">Courier New</option>
+                  <option value="Consolas, 'Courier New', monospace">Consolas</option>
+                  <option value="'Lucida Console', Monaco, monospace">Lucida Console</option>
+                </optgroup>
+                <optgroup label="Display / Fun">
+                  <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans MS</option>
+                </optgroup>
               </select>
             </label>
             <label>

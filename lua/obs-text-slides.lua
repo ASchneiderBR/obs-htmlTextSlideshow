@@ -59,6 +59,19 @@ end
 
 function script_properties()
   local props = obs.obs_properties_create()
+  
+  -- Add informational text at the top
+  obs.obs_properties_add_text(props, "info_text", 
+    "Text Slides Hotkey Control\n\n" ..
+    "This script enables hotkey navigation for your text slides.\n" ..
+    "Configure hotkeys below:\n\n" ..
+    "  • Next Slide - Advance to next (respects loop setting)\n" ..
+    "  • Previous Slide - Go back to previous\n" ..
+    "  • First Slide - Jump to first slide\n\n" ..
+    "Make sure the dock UI is loaded in OBS (Tools > Docks > Custom Browser Docks).\n" ..
+    "Point it to: apps/dock-ui/index.html", 
+    obs.OBS_TEXT_INFO)
+  
   return props
 end
 

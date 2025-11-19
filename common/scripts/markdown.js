@@ -37,10 +37,14 @@ export function markdownToHtml(markdown = "") {
 
   const flushParagraph = (buffer) => {
     if (!buffer.trim()) return;
-    html += `<p>${renderInline(escapeHtml(buffer.trim()))}</p>`;
+    // Split by line breaks, escape each line, then join with <br>
+    const lines = buffer.trim().split('\n');
+    const processedLines = lines.map(line => renderInline(escapeHtml(line)));
+    html += `<p>${processedLines.join('<br>')}</p>`;
   };
 
   let paragraphBuffer = "";
+  let paragraphLines = [];
 
   for (const rawLine of lines) {
     const line = rawLine.replace(/\t/g, "    ");
@@ -51,9 +55,11 @@ export function markdownToHtml(markdown = "") {
         codeFence = "";
         inCodeBlock = false;
       } else {
-        if (paragraphBuffer) {
+        if (paragraphLines.length > 0) {
+          paragraphBuffer = paragraphLines.join('\n');
           flushParagraph(paragraphBuffer);
           paragraphBuffer = "";
+          paragraphLines = [];
         }
         inCodeBlock = true;
       }
@@ -66,9 +72,11 @@ export function markdownToHtml(markdown = "") {
     }
 
     if (!line.trim()) {
-      if (paragraphBuffer) {
+      if (paragraphLines.length > 0) {
+        paragraphBuffer = paragraphLines.join('\n');
         flushParagraph(paragraphBuffer);
         paragraphBuffer = "";
+        paragraphLines = [];
       }
       html += closeList(listState);
       continue;
@@ -76,9 +84,11 @@ export function markdownToHtml(markdown = "") {
 
     const headingMatch = line.match(/^(#{1,6})\s+(.*)$/);
     if (headingMatch) {
-      if (paragraphBuffer) {
+      if (paragraphLines.length > 0) {
+        paragraphBuffer = paragraphLines.join('\n');
         flushParagraph(paragraphBuffer);
         paragraphBuffer = "";
+        paragraphLines = [];
       }
       html += closeList(listState);
       const level = headingMatch[1].length;
@@ -88,9 +98,11 @@ export function markdownToHtml(markdown = "") {
 
     const blockquoteMatch = line.match(/^>\s?(.*)$/);
     if (blockquoteMatch) {
-      if (paragraphBuffer) {
+      if (paragraphLines.length > 0) {
+        paragraphBuffer = paragraphLines.join('\n');
         flushParagraph(paragraphBuffer);
         paragraphBuffer = "";
+        paragraphLines = [];
       }
       html += closeList(listState);
       html += `<blockquote>${renderInline(escapeHtml(blockquoteMatch[1]))}</blockquote>`;
@@ -99,9 +111,11 @@ export function markdownToHtml(markdown = "") {
 
     const unorderedMatch = line.match(/^[-*+]\s+(.*)$/);
     if (unorderedMatch) {
-      if (paragraphBuffer) {
+      if (paragraphLines.length > 0) {
+        paragraphBuffer = paragraphLines.join('\n');
         flushParagraph(paragraphBuffer);
         paragraphBuffer = "";
+        paragraphLines = [];
       }
       if (listState.type !== "ul") {
         html += closeList(listState);
@@ -114,9 +128,11 @@ export function markdownToHtml(markdown = "") {
 
     const orderedMatch = line.match(/^\d+\.\s+(.*)$/);
     if (orderedMatch) {
-      if (paragraphBuffer) {
+      if (paragraphLines.length > 0) {
+        paragraphBuffer = paragraphLines.join('\n');
         flushParagraph(paragraphBuffer);
         paragraphBuffer = "";
+        paragraphLines = [];
       }
       if (listState.type !== "ol") {
         html += closeList(listState);
@@ -127,10 +143,12 @@ export function markdownToHtml(markdown = "") {
       continue;
     }
 
-    paragraphBuffer += (paragraphBuffer ? " " : "") + line.trim();
+    // Collect lines to preserve line breaks
+    paragraphLines.push(line.trim());
   }
 
-  if (paragraphBuffer) {
+  if (paragraphLines.length > 0) {
+    paragraphBuffer = paragraphLines.join('\n');
     flushParagraph(paragraphBuffer);
   }
 

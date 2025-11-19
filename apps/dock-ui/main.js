@@ -12,6 +12,8 @@ const fontSelect = document.querySelector("#fontFamily");
 const fontSizeInput = document.querySelector("#fontSize");
 const textAlignSelect = document.querySelector("#textAlign");
 const verticalAlignSelect = document.querySelector("#verticalAlign");
+const transitionTypeSelect = document.querySelector("#transitionType");
+const transitionDurationInput = document.querySelector("#transitionDuration");
 const statusPill = document.querySelector("[data-status-pill]");
 
 let draggedSlideIndex = null;
@@ -36,6 +38,8 @@ const DEFAULT_STATE = {
     textAlign: "center",
     verticalAlign: "center",
     markdown: true,
+    transitionType: "crossfade",
+    transitionDuration: 200,
   },
   slides: [
     {
@@ -87,7 +91,8 @@ function loadStateFromStorage() {
     const raw = localStorage.getItem(STATE_STORAGE_KEY);
     if (!raw) return clone(DEFAULT_STATE);
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed.slides) || !parsed.slides.length) {
+    // If slides is not an array, use default. But if it's empty array, keep it empty (user cleared)
+    if (!Array.isArray(parsed.slides)) {
       return clone(DEFAULT_STATE);
     }
     return {
@@ -118,6 +123,8 @@ function applyStateToUi() {
   if (fontSizeInput) fontSizeInput.value = String(state.settings.defaultFontSizePx);
   if (textAlignSelect) textAlignSelect.value = state.settings.textAlign;
   if (verticalAlignSelect) verticalAlignSelect.value = state.settings.verticalAlign;
+  if (transitionTypeSelect) transitionTypeSelect.value = state.settings.transitionType || "crossfade";
+  if (transitionDurationInput) transitionDurationInput.value = String(state.settings.transitionDuration || 200);
   renderPreview();
   updateClearAllButton();
 }
@@ -136,14 +143,15 @@ function renderPreview() {
   const html = state.slides
     .map(
       (slide, index) => `
-      <article class="preview__slide" draggable="true" data-slide-index="${index}">
+      <article class="preview__slide ${index === state.activeSlideIndex ? 'preview__slide--active' : ''}" draggable="true" data-slide-index="${index}">
         <div class="preview__slide-header">
           <div class="preview__slide-title">
             <span class="preview__slide-drag-handle">⋮⋮</span>
             <span>Slide ${index + 1}</span>
           </div>
           <div class="preview__slide-actions">
-            <button type="button" class="preview__slide-delete" data-delete-index="${index}">Delete</button>
+            <button type="button" class="preview__slide-play" data-play-index="${index}" title="Show this slide">▶</button>
+            <button type="button" class="preview__slide-delete" data-delete-index="${index}" title="Delete this slide">Delete</button>
           </div>
         </div>
         <div class="preview__slide-content">${markdownToHtml(slide.raw || "")}</div>
@@ -242,6 +250,16 @@ function insertDelimiter() {
 }
 
 function attachSlideEventListeners() {
+  // Play buttons
+  const playButtons = document.querySelectorAll(".preview__slide-play");
+  playButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(btn.dataset.playIndex, 10);
+      setActiveSlide(index, "manual-play");
+    });
+  });
+
   // Delete buttons
   const deleteButtons = document.querySelectorAll(".preview__slide-delete");
   deleteButtons.forEach((btn) => {
@@ -331,6 +349,8 @@ function updateSettings(reason = "settings") {
   state.settings.defaultFontSizePx = Number(fontSizeInput?.value) || state.settings.defaultFontSizePx;
   state.settings.textAlign = textAlignSelect?.value || state.settings.textAlign;
   state.settings.verticalAlign = verticalAlignSelect?.value || state.settings.verticalAlign;
+  state.settings.transitionType = transitionTypeSelect?.value || state.settings.transitionType;
+  state.settings.transitionDuration = Number(transitionDurationInput?.value) || state.settings.transitionDuration;
   persistState(reason);
 }
 
@@ -353,6 +373,7 @@ function setActiveSlide(index, reason = "manual") {
   const clamped = Math.max(0, Math.min(index, state.slides.length - 1));
   if (clamped === state.activeSlideIndex) return;
   state.activeSlideIndex = clamped;
+  renderPreview();
   persistState(reason);
 }
 
@@ -385,6 +406,8 @@ function init() {
   fontSizeInput?.addEventListener("input", () => updateSettings("font size"));
   textAlignSelect?.addEventListener("change", () => updateSettings("horizontal alignment"));
   verticalAlignSelect?.addEventListener("change", () => updateSettings("vertical alignment"));
+  transitionTypeSelect?.addEventListener("change", () => updateSettings("transition type"));
+  transitionDurationInput?.addEventListener("input", () => updateSettings("transition duration"));
 
   applyStateToUi();
   renderStatus("Ready", "success");

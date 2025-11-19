@@ -338,6 +338,12 @@ textarea {
   border-color: var(--accent);
 }
 
+.preview__slide--active {
+  border-color: var(--accent);
+  background: rgba(47, 129, 247, 0.08);
+  box-shadow: 0 0 0 2px rgba(47, 129, 247, 0.2);
+}
+
 .preview__slide.dragging {
   opacity: 0.5;
   cursor: grabbing;
@@ -377,6 +383,33 @@ textarea {
 .preview__slide-actions {
   display: flex;
   gap: 4px;
+}
+
+.preview__slide-play {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+}
+
+.preview__slide-play:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.preview__slide--active .preview__slide-play {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 
 .preview__slide-delete {

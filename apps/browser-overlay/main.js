@@ -79,7 +79,7 @@ function handleState(data) {
 
   setState("ready");
   applyTypography(slide, settings);
-  swapContent(slide);
+  swapContent(slide, settings);
   updateProgress(slide.durationMs || data.playlist?.autoAdvanceMs || 0);
 
   if (debugEl && (showDebug || showMeta)) {
@@ -108,14 +108,58 @@ function applyTypography(slide, settings) {
   }
 }
 
-function swapContent(slide) {
+function swapContent(slide, settings) {
   if (!bodyEl) return;
   const markdown = slide.raw ?? slide.body ?? "";
-  bodyEl.classList.add("is-hidden");
-  setTimeout(() => {
+  const transitionType = settings?.transitionType || "crossfade";
+  const duration = settings?.transitionDuration || 200;
+  
+  // Update CSS variable for duration
+  document.documentElement.style.setProperty("--transition-duration", `${duration}ms`);
+  
+  // Remove all transition classes
+  bodyEl.className = "slide-body";
+  
+  if (transitionType === "none") {
+    // No animation, instant change
     bodyEl.innerHTML = markdown ? markdownToHtml(markdown) : "<p>(empty slide)</p>";
-    bodyEl.classList.remove("is-hidden");
-  }, 120);
+    return;
+  }
+  
+  if (transitionType === "crossfade") {
+    // Crossfade: fade out and fade in simultaneously
+    bodyEl.classList.add("transition-out");
+    setTimeout(() => {
+      bodyEl.innerHTML = markdown ? markdownToHtml(markdown) : "<p>(empty slide)</p>";
+      bodyEl.classList.remove("transition-out");
+      bodyEl.classList.add("transition-in");
+      setTimeout(() => {
+        bodyEl.classList.remove("transition-in");
+      }, duration);
+    }, duration / 2);
+  } else if (transitionType === "fade") {
+    // Sequential fade: fade out completely, then fade in
+    bodyEl.classList.add("transition-out");
+    setTimeout(() => {
+      bodyEl.innerHTML = markdown ? markdownToHtml(markdown) : "<p>(empty slide)</p>";
+      bodyEl.classList.remove("transition-out");
+      bodyEl.classList.add("transition-in");
+      setTimeout(() => {
+        bodyEl.classList.remove("transition-in");
+      }, duration);
+    }, duration);
+  } else {
+    // All other transitions (slide, zoom, push)
+    bodyEl.classList.add(`transition-${transitionType}-out`);
+    setTimeout(() => {
+      bodyEl.innerHTML = markdown ? markdownToHtml(markdown) : "<p>(empty slide)</p>";
+      bodyEl.classList.remove(`transition-${transitionType}-out`);
+      bodyEl.classList.add(`transition-${transitionType}-in`);
+      setTimeout(() => {
+        bodyEl.classList.remove(`transition-${transitionType}-in`);
+      }, duration);
+    }, duration);
+  }
 }
 
 function updateProgress(durationMs) {

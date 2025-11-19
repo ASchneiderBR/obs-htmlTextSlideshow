@@ -83,10 +83,35 @@
               </select>
             </label>
           </div>
+          <h2>Slide animation</h2>
+          <div class="panel--settings">
+            <label>
+              Transition type
+              <select id="transitionType">
+                <option value="crossfade">Crossfade</option>
+                <option value="fade">Fade (sequential)</option>
+                <option value="slide-left">Slide left</option>
+                <option value="slide-right">Slide right</option>
+                <option value="slide-up">Slide up</option>
+                <option value="slide-down">Slide down</option>
+                <option value="zoom-in">Zoom in</option>
+                <option value="zoom-out">Zoom out</option>
+                <option value="push-left">Push left</option>
+                <option value="push-right">Push right</option>
+                <option value="push-up">Push up</option>
+                <option value="push-down">Push down</option>
+                <option value="none">None (instant)</option>
+              </select>
+            </label>
+            <label>
+              Duration (ms)
+              <input id="transitionDuration" type="number" min="0" max="2000" step="50" value="200" />
+            </label>
+          </div>
         </section>
         <section class="panel panel--editor">
           <header class="panel__header">
-            <h2>Markdown editor</h2>
+            <h2>Text input</h2>
             <div class="toolbar">
               <button type="button" data-action="insert-delimiter">Insert ---</button>
             </div>

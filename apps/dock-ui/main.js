@@ -186,6 +186,9 @@ function renderPreview() {
     return;
   }
 
+  // Salvar posição do scroll antes de re-renderizar
+  const scrollTop = preview.scrollTop;
+  
   // Usar DocumentFragment para melhor performance
   const fragment = document.createDocumentFragment();
   const tempDiv = document.createElement('div');
@@ -217,6 +220,9 @@ function renderPreview() {
   
   preview.innerHTML = '';
   preview.appendChild(fragment);
+  
+  // Restaurar posição do scroll
+  preview.scrollTop = scrollTop;
   
   if (previewCountEl) {
     previewCountEl.textContent = `${state.slides.length} ${

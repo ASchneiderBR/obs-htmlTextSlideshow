@@ -803,6 +803,9 @@ textarea {
 .preview__slide-content ol {
   margin: 0.3em 0;
   padding-left: 1.5em;
+  display: inline-block;
+  text-align: left;
+  max-width: 100%;
 }
 
 .list {

@@ -1,0 +1,1 @@
+window.__obsTextSlidesHotkey={seq:9,command:'first',updatedAt:'2025-11-20T22:52:46.000Z'};

@@ -1,1 +1,0 @@
-window.__obsTextSlidesHotkey={seq:24,command:'next',updatedAt:'2025-11-20T17:52:49.000Z'};

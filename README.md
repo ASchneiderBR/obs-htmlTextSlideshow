@@ -2,7 +2,7 @@
 
 **Version 2.0** – A complete, standalone text slideshow system for OBS Studio. Control on-stream text slides with a modern browser dock, smooth transitions, and global hotkeys. Inspired by [Animated-Lower-Thirds](https://github.com/noeal-dac/Animated-Lower-Thirds), reimagined for text presentations.
 
-![Dock Preview](https://i.imgur.com/1sWEKJw.png)
+![Dock Preview](https://i.imgur.com/dfnu3HP.png)
 
 ## 🚀 Quick Start (Super Easy Install)
 

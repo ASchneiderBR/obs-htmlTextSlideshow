@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.1.0] - 2024-12-07
+## [2.1.0] - 2025-12-07
 
 ### Added
 - **Release automation**: GitHub Actions workflow for automated releases
@@ -90,4 +90,3 @@
 - Transition animations
 - OBS hotkey integration
 - BroadcastChannel sync
-

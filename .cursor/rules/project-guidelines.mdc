@@ -10,7 +10,9 @@ alwaysApply: true
 **Version 2.0** simplifies the architecture into three standalone files:
 1. **Dock.html**: A fully bundled browser dock for editing slides and controlling playback (all CSS/JS inline).
 2. **Source.html**: A fully bundled browser overlay displayed in OBS scenes (all CSS/JS inline).
-3. **obs-text-slides.lua**: Lua script for OBS that handles global hotkeys and displays installation paths.
+3. **text-slides.lua**: Lua script for OBS that handles global hotkeys and displays installation paths.
+
+**Distribution**: The project is distributed via GitHub Releases as a ZIP file (`htmlTextSlideshow-X.Y.Z.zip`) containing the core files directly in the root (no subfolder). Users extract the ZIP and load the Lua script in OBS.
 
 ## Tech Stack
 - **Frontend**: Vanilla JavaScript (ES5 for maximum compatibility), HTML5, CSS3.
@@ -160,12 +162,13 @@ alwaysApply: true
 **What the workflow does:**
 - Validates version format (must be X.Y.Z)
 - Checks if tag already exists
-- Creates release package ZIP with:
+- Creates release package ZIP (`htmlTextSlideshow-X.Y.Z.zip`) with files directly in root:
   - `Dock.html`
   - `Source.html`
   - `text-slides.lua`
   - `README.md`
   - `LICENSE`
+- **Important**: ZIP contains files in root (no `release-package/` folder) for easy extraction
 - Extracts release notes from CHANGELOG.md (if not provided manually)
 - Creates Git tag
 - Creates GitHub Release with ZIP attachment
@@ -209,4 +212,5 @@ alwaysApply: true
 - Always update CHANGELOG.md before creating a release.
 - The ZIP file is named: `htmlTextSlideshow-X.Y.Z.zip`
 - The ZIP contains files directly in root (no intermediate folder like `release-package/`)
+- Users extract the ZIP and get the files ready to use (no nested folders)
 - The workflow preserves markdown formatting when extracting notes from CHANGELOG.md

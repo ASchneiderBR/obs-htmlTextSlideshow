@@ -6,30 +6,70 @@
 
 ## 🚀 Quick Start (Super Easy Install)
 
-1. **Download** this repository (or the release zip).
-2. **Extract** the folder anywhere on your computer (e.g., `Documents\HTML-Text-Slideshow`).
-3. In OBS, go to **Tools → Scripts**, click the `+` button, and load **`text-slides.lua`**.
-4. In the **Script Properties** panel, you'll see two file paths:
-   - **Dock Path** – Copy this path.
-   - **Source Path** – Copy this path.
-5. **Add the Dock**: Go to `View > Docks > Custom Browser Docks...`
+### Installation from Release ZIP (Recommended)
+
+1. **Download the latest release**:
+   - Go to [Releases](https://github.com/ASchneiderBR/htmlTextSlideshow/releases)
+   - Download `htmlTextSlideshow-X.Y.Z.zip` (latest version)
+   
+2. **Extract the ZIP file**:
+   - Extract all files to a folder on your computer (e.g., `Documents\HTML-Text-Slideshow`)
+   - **Important**: Extract directly - the ZIP contains files in the root (no subfolder)
+   - You should see: `Dock.html`, `Source.html`, `text-slides.lua`, `README.md`, `LICENSE`
+
+3. **Load the script in OBS**:
+   - In OBS, go to **Tools → Scripts**
+   - Click the `+` button
+   - Browse and load **`text-slides.lua`** from the extracted folder
+
+4. **Get file paths from Script Properties**:
+   - In the **Script Properties** panel, you'll see two file paths:
+     - **Dock URL** – Copy this path (starts with `file:///`)
+     - **Source Path** – Copy this path
+
+5. **Add the Dock**:
+   - Go to `View > Docks > Custom Browser Docks...`
+   - Click `+` to add a new dock
    - **Dock Name**: `Text Slides` (or any name you like)
-   - **URL**: Paste the **Dock Path** from step 4.
-6. **Add the Source**: Add a **Browser Source** to your scene.
-   - Check **"Local file"** and browse to select **`Source.html`**, or paste the **Source Path** into the URL field.
-   - Set width/height to match your canvas (e.g., 1920x1080).
-7. **Configure Hotkeys** (optional): Go to `Settings > Hotkeys`, search for "Text Slides", and bind keys for Next/Previous/First Slide.
-8. **Done!** Type in the dock, click "Add slides", and control your show.
+   - **URL**: Paste the **Dock URL** from step 4
+   - Click **OK**
+
+6. **Add the Source to your scene**:
+   - Add a **Browser Source** to your scene
+   - Check **"Local file"**
+   - Browse to select **`Source.html`**, or paste the **Source Path** into the URL field
+   - Set width/height to match your canvas (e.g., 1920x1080)
+   - Click **OK**
+
+7. **Configure Hotkeys** (optional):
+   - Go to `Settings > Hotkeys`
+   - Search for "Text Slides"
+   - Bind keys for:
+     - **Text Slides: Next** – Advance to next slide
+     - **Text Slides: Previous** – Go back to previous slide
+     - **Text Slides: First** – Jump to first slide
+
+8. **Done!** 
+   - Open the **Text Slides** dock
+   - Type or paste your content
+   - Use `---` on a blank line to separate slides
+   - Click **"Add slides"** to publish
+   - Control slides with the dock buttons or your hotkeys during streaming!
 
 ## 📁 Files (All-In-One Design)
 
-Version 2.0 simplifies everything into just **3 files**:
+Version 2.0 simplifies everything into just **3 core files** (plus auto-generated files):
 
+**Core Files** (included in release ZIP):
 - **`text-slides.lua`** – The installer script. Manages hotkeys and displays file paths.
 - **`Dock.html`** – The control panel (standalone, all CSS/JS bundled inside).
 - **`Source.html`** – The overlay display (standalone, all CSS/JS bundled inside).
-- **`hotkeys.js`** – (Auto-generated) Bridges Lua hotkey commands to the Dock.
-- **`slides.json`** – (Auto-generated) Fallback storage for slides if BroadcastChannel fails.
+
+**Auto-generated Files** (created automatically when you use the slideshow):
+- **`hotkeys.js`** – Bridges Lua hotkey commands to the Dock (created by the Lua script).
+- **`slides.json`** – Fallback storage for slides if BroadcastChannel fails (created automatically).
+
+**Note**: The release ZIP contains only the core files. Auto-generated files are created in the same folder when you first use the slideshow.
 
 ## ✨ Features
 

@@ -124,3 +124,4 @@ Após criar o release, verifique:
 - Verifique se o CHANGELOG.md tem uma entrada para a versão
 - Ou forneça as notas manualmente no campo "Release notes"
 
+

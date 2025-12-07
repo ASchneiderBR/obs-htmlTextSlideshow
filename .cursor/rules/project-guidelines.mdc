@@ -99,18 +99,38 @@ alwaysApply: true
 
 ### Making a Release via Chat/AI Assistant
 
-**Workflow**: `.github/workflows/release.yml` - Manual workflow dispatch
+**Method**: GitHub CLI (`gh`) - Direct release creation via chat
 
-**Steps to create a release:**
-1. **Update CHANGELOG.md**: Add a new version entry with changes (following existing format).
-2. **Ask AI to create release**: Simply say "criar release versão X.Y.Z" or "create release version X.Y.Z".
-3. **AI will trigger workflow**: The AI assistant will use GitHub Actions API or guide you to:
-   - Go to GitHub Actions tab
-   - Select "Release" workflow
-   - Click "Run workflow"
-   - Enter version number (e.g., `2.1.0`)
-   - Optionally enter release notes (or leave empty to auto-extract from CHANGELOG)
-   - Click "Run workflow"
+**When user asks for a release (e.g., "criar release versão 2.1" or "create release version 2.1.0"):**
+
+1. **Verify CHANGELOG.md**: Check if entry exists for the version. If not, create it with:
+   - Date in format `YYYY-MM-DD` (use current date)
+   - Sections: Added, Changed, Fixed, Removed (as applicable)
+   - Follow existing format and style
+
+2. **Commit CHANGELOG**: Stage and commit the CHANGELOG update with message like `chore: prepare release X.Y.Z`
+
+3. **Push to main**: Ensure all changes are pushed to `origin/main`
+
+4. **Create release via GitHub CLI**:
+   ```bash
+   gh workflow run release.yml -f version=X.Y.Z
+   ```
+   Or if GitHub CLI workflow dispatch is not available, use:
+   ```bash
+   gh release create vX.Y.Z --title "Release X.Y.Z" --notes-file <(extract from CHANGELOG)
+   ```
+
+5. **Monitor workflow**: The workflow will:
+   - Validate version format
+   - Check if tag exists
+   - Create ZIP package
+   - Extract notes from CHANGELOG
+   - Create Git tag
+   - Create GitHub Release
+
+**Alternative (if GitHub CLI workflow dispatch fails):**
+- Use `gh release create` directly with notes extracted from CHANGELOG.md
 
 **What the workflow does:**
 - Validates version format (must be X.Y.Z)

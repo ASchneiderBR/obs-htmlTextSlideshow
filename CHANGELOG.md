@@ -3,17 +3,17 @@
 ## [2.1.0] - 2025-12-07
 
 ### Added
-- **Release automation**: GitHub Actions workflow for automated releases
-- **Improved .gitignore**: Excludes auto-generated files (hotkeys.js, slides.json) and user data
-- **Release documentation**: Complete guide in RELEASE.md
+- **Release automation**: GitHub Actions workflow for automated releases via chat/AI assistant
+- **Improved .gitignore**: Excludes auto-generated files (hotkeys.js, slides.json) and user data for better privacy
+- **Release documentation**: Complete guide in RELEASE.md with step-by-step instructions
 
 ### Changed
-- **Project rules**: Updated with release process documentation
-- **Workflow structure**: New release.yml workflow with manual dispatch support
+- **Project rules**: Updated with release process documentation and GitHub CLI integration
+- **Workflow structure**: New release.yml workflow with manual dispatch support for automated releases
 
 ### Fixed
-- **Privacy**: Auto-generated files with user data no longer tracked in Git
-- **Release process**: Streamlined release creation via chat/AI assistant
+- **Privacy**: Auto-generated files with user data no longer tracked in Git repository
+- **Release process**: Streamlined release creation - AI assistant can now create releases directly via GitHub CLI
 
 ---
 

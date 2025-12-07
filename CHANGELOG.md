@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.1.0] - 2024-12-07
+
+### Added
+- **Release automation**: GitHub Actions workflow for automated releases
+- **Improved .gitignore**: Excludes auto-generated files (hotkeys.js, slides.json) and user data
+- **Release documentation**: Complete guide in RELEASE.md
+
+### Changed
+- **Project rules**: Updated with release process documentation
+- **Workflow structure**: New release.yml workflow with manual dispatch support
+
+### Fixed
+- **Privacy**: Auto-generated files with user data no longer tracked in Git
+- **Release process**: Streamlined release creation via chat/AI assistant
+
+---
+
 ## [2.0.0] - 2024-11-20
 
 ### 🎉 Major Release - Complete Architecture Overhaul

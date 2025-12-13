@@ -1,6 +1,9 @@
 name: Release
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       version:
@@ -25,29 +28,46 @@ jobs:
         with:
           fetch-depth: 0
       
+      - name: Determine Version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            # Triggered by tag, strip refs/tags/v or refs/tags/
+            REF_NAME="${{ github.ref_name }}"
+            # Remove 'v' prefix if present for consistency with X.Y.Z format
+            VERSION="${REF_NAME#v}"
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Detected version: $VERSION"
+
       - name: Validate version format
         run: |
-          if [[ ! "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Error: Version must be in format X.Y.Z (e.g., 2.1.0)"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Error: Version must be in format X.Y.Z (e.g., 2.1.0). Got: $VERSION"
             exit 1
           fi
-          echo "Version validated: ${{ inputs.version }}"
+          echo "Version validated: $VERSION"
       
-      - name: Check if tag exists
+      - name: Check if tag exists (Manual only)
+        if: github.event_name == 'workflow_dispatch'
         id: check_tag
         run: |
-          if git rev-parse "${{ inputs.version }}" >/dev/null 2>&1; then
+          TAG_NAME="v$VERSION"
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
-            echo "Tag ${{ inputs.version }} already exists!"
+            echo "Tag $TAG_NAME already exists!"
           else
             echo "exists=false" >> $GITHUB_OUTPUT
-            echo "Tag ${{ inputs.version }} is available"
+            echo "Tag $TAG_NAME is available"
           fi
       
       - name: Create release package
         run: |
           # Create ZIP file with files directly in root (no intermediate folder)
-          zip htmlTextSlideshow-${{ inputs.version }}.zip \
+          PKG_NAME="htmlTextSlideshow-${VERSION}.zip"
+          zip "$PKG_NAME" \
             Dock.html \
             Source.html \
             text-slides.lua \
@@ -55,24 +75,18 @@ jobs:
             LICENSE
           # List contents for verification
           echo "📦 Release package contents:"
-          unzip -l htmlTextSlideshow-${{ inputs.version }}.zip
-          echo "✅ Created ZIP: htmlTextSlideshow-${{ inputs.version }}.zip"
-          ls -lh htmlTextSlideshow-${{ inputs.version }}.zip
+          unzip -l "$PKG_NAME"
+          echo "✅ Created ZIP: $PKG_NAME"
+          # ls -lh "$PKG_NAME"
       
       - name: Extract release notes from CHANGELOG
         id: changelog
         if: inputs.release_notes == ''
         run: |
           # Extract the version entry from CHANGELOG.md
-          VERSION="${{ inputs.version }}"
+          # Search for [2.2.0] or [v2.2.0]
           
           if grep -q "## \[$VERSION\]" CHANGELOG.md; then
-            # Extract content from this version header until the next version header or separator
-            # This awk command:
-            # 1. Starts at the version header (## [VERSION])
-            # 2. Stops at the next version header (## [) or separator (---)
-            # 3. Excludes the version header line itself
-            # 4. Stops before the separator or next version
             awk -v version="$VERSION" '
               BEGIN { in_section = 0; found = 0 }
               /^## \[/ && found == 1 { exit }
@@ -80,15 +94,8 @@ jobs:
               /^---$/ && in_section == 1 { exit }
               in_section == 1 { print }
             ' CHANGELOG.md > /tmp/release_notes.txt
-            
-            # Verify we got content
-            if [ ! -s /tmp/release_notes.txt ]; then
-              echo "⚠️  Warning: No content extracted for version $VERSION"
-              echo "Release $VERSION" > /tmp/release_notes.txt
-            fi
           else
             echo "⚠️  Warning: Version $VERSION not found in CHANGELOG.md"
-            echo "Using default release notes"
             echo "Release $VERSION" > /tmp/release_notes.txt
           fi
           
@@ -97,26 +104,27 @@ jobs:
           cat /tmp/release_notes.txt >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       
-      - name: Create Git tag
-        if: steps.check_tag.outputs.exists == 'false'
+      - name: Create Git tag (Manual only)
+        if: github.event_name == 'workflow_dispatch' && steps.check_tag.outputs.exists == 'false'
         run: |
+          TAG_NAME="v$VERSION"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "${{ inputs.version }}" -m "Release ${{ inputs.version }}"
-          git push origin "${{ inputs.version }}"
+          git tag -a "$TAG_NAME" -m "Release $VERSION"
+          git push origin "$TAG_NAME"
       
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ inputs.version }}
-          name: Release ${{ inputs.version }}
+          tag_name: "v${{ env.VERSION }}"
+          name: "Release v${{ env.VERSION }}"
           body: |
             ${{ inputs.release_notes != '' && inputs.release_notes || steps.changelog.outputs.notes }}
             
             ## 📦 Download
             
             Download the ZIP file below and extract it to use the slideshow in OBS Studio.
-          files: htmlTextSlideshow-${{ inputs.version }}.zip
+          files: htmlTextSlideshow-${{ env.VERSION }}.zip
           draft: false
           prerelease: false
         env:

@@ -1,4 +1,4 @@
----
+﻿---
 description: Project standards, architecture, and privacy rules for OBS Text Slideshow
 globs: 
   - "**/*"
@@ -97,6 +97,7 @@ alwaysApply: true
 - **Lazy Loading**: Google Fonts are loaded dynamically only when first used.
 - **Memory Management**: Status log is limited to 50 entries to prevent memory leaks.
 
+
 ## Release Process (v2.0+)
 
 ### Making a Release via Chat/AI Assistant
@@ -177,7 +178,7 @@ alwaysApply: true
 - Follow semantic versioning: `MAJOR.MINOR.PATCH`
 - **MAJOR**: Breaking changes (e.g., 2.0.0 → 3.0.0)
 - **MINOR**: New features, backwards compatible (e.g., 2.0.0 → 2.1.0)
-- **PATCH**: Bug fixes, backwards compatible (e.g., 2.0.0 → 2.0.1)
+- **PATCH**: Bug fixes, backwards compatible (e.g., 2.0.0 → 2.1.1)
 
 **CHANGELOG Format (CRITICAL - Must follow exactly):**
 ```markdown
@@ -214,3 +215,4 @@ alwaysApply: true
 - The ZIP contains files directly in root (no intermediate folder like `release-package/`)
 - Users extract the ZIP and get the files ready to use (no nested folders)
 - The workflow preserves markdown formatting when extracting notes from CHANGELOG.md
+
